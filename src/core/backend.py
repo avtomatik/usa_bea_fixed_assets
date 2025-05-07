@@ -11,10 +11,9 @@ from functools import cache
 
 import pandas as pd
 from core.classes import SeriesID
-from pandas import DataFrame
 
 
-def stockpile(series_ids: list[SeriesID]) -> DataFrame:
+def stockpile(series_ids: list[SeriesID]) -> pd.DataFrame:
     """
 
 
@@ -25,7 +24,7 @@ def stockpile(series_ids: list[SeriesID]) -> DataFrame:
 
     Returns
     -------
-    DataFrame
+    pd.DataFrame
         ================== =================================
         df.index           Period
         ...                ...
@@ -44,7 +43,7 @@ def stockpile(series_ids: list[SeriesID]) -> DataFrame:
 
 
 @cache
-def read_source(series_id: SeriesID) -> DataFrame:
+def read_source(series_id: SeriesID) -> pd.DataFrame:
     """
 
 
@@ -55,7 +54,7 @@ def read_source(series_id: SeriesID) -> DataFrame:
 
     Returns
     -------
-    DataFrame
+    pd.DataFrame
         ================== =================================
         df.index           Period
         df.iloc[:, 0]      Series IDs
@@ -66,13 +65,13 @@ def read_source(series_id: SeriesID) -> DataFrame:
     return pd.read_csv(**series_id.source.get_kwargs())
 
 
-def pull_by_series_id(df: DataFrame, series_id: SeriesID) -> DataFrame:
+def pull_by_series_id(df: pd.DataFrame, series_id: SeriesID) -> pd.DataFrame:
     """
 
 
     Parameters
     ----------
-    df : DataFrame
+    df : pd.DataFrame
         ================== =================================
         df.index           Period
         df.iloc[:, 0]      Series IDs
@@ -83,7 +82,7 @@ def pull_by_series_id(df: DataFrame, series_id: SeriesID) -> DataFrame:
 
     Returns
     -------
-    DataFrame
+    pd.DataFrame
         ================== =================================
         df.index           Period
         df.iloc[:, 0]      Series
@@ -92,7 +91,7 @@ def pull_by_series_id(df: DataFrame, series_id: SeriesID) -> DataFrame:
     """
     assert df.shape[1] == 2
     return df[df.iloc[:, 0] == series_id.series_id].iloc[:, [1]].rename(
-        columns={"value": series_id.series_id}
+        columns={'value': series_id.series_id}
     )
 
 
